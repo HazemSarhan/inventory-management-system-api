@@ -57,7 +57,7 @@ Built with:
 
 - Check the full Database ERD : [Link](https://drawsql.app/teams/drag0ns-team/diagrams/inventory-management-system)
 <picture>
-  <source media="(prefers-color-scheme: dark)" srcset="https://i.imgur.com/axf4Jjy.png">
+  <img alt="DB Design" src="https://i.imgur.com/axf4Jjy.png">
 </picture>
 
 ## Installation :
