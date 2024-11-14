@@ -1,0 +1,188 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id String @id @default(uuid())
+  name String
+  email String @unique
+  password String
+  role Role @default(USER)
+  bio String?
+  profile_picture String?
+  auditLogs AuditLog[]
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+}
+
+model Category {
+  id Int @id @default(autoincrement())
+  name String
+  description String?
+  products Product[]
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+}
+
+model Product {
+  id Int @id @default(autoincrement())
+  name String
+  description String?
+  price Decimal
+  quantity Int
+  discount Int?
+  category Category @relation(fields: [categoryId], references: [id])
+  categoryId Int
+  warehouse Warehouse @relation(fields: [warehouseId], references: [id])
+  warehouseId Int
+  purchaseItems PurchaseOrderItem[]
+  stockMovement StockMovement[]
+  salesItems SalesOrderItem[]
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+}
+
+model Supplier {
+  id Int @id @default(autoincrement())
+  name String
+  phoneNumber String?
+  address String?
+  purchaseOrders PurchaseOrder[]
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+}
+
+model PurchaseOrder {
+  id Int @id @default(autoincrement())
+  supplier Supplier @relation(fields: [supplierId], references: [id])
+  supplierId Int
+  status OrderStatus @default(PENDING)
+  totalCost Decimal
+  items PurchaseOrderItem[]
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+}
+
+model PurchaseOrderItem {
+  id Int @id @default(autoincrement())
+  purchaseOrder PurchaseOrder @relation(fields: [purchaseOrderId], references: [id])
+  purchaseOrderId Int
+  product Product @relation(fields: [productId], references: [id])
+  productId Int
+  quantity Int
+  unitPrice Int
+  totalPrice Decimal
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+}
+
+model Warehouse {
+  id Int @id @default(autoincrement())
+  name String
+  location String?
+  capacity  Int?
+  products Product[]
+  stockMovement StockMovement[]
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+}
+
+model StockMovement {
+  id Int @id @default(autoincrement())
+  product Product @relation(fields: [productId], references: [id])
+  productId Int
+  warehouse Warehouse @relation(fields: [warehouseId], references: [id])
+  warehouseId Int
+  type StockType
+  quantity Int
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+}
+
+model Customer {
+  id Int @id @default(autoincrement())
+  name String
+  phoneNumber String?
+  address String?
+  salesOrder SalesOrder[]
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+}
+
+model SalesOrder {
+  id Int @id @default(autoincrement())
+  customer Customer @relation(fields: [customerId], references: [id])
+  customerId Int
+  status SalesOrderStatus
+  totalCost Decimal
+  items SalesOrderItem[]
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+}
+
+model SalesOrderItem {
+  id Int @id @default(autoincrement())
+  salesOrder SalesOrder @relation(fields: [salesOrderId], references: [id])
+  salesOrderId Int
+  product Product @relation(fields: [productId], references: [id])
+  productId Int
+  quantity Int
+  totalPrice Decimal
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+}
+
+model AuditLog {
+  id Int @id @default(autoincrement())
+  user User @relation(fields: [userId], references: [id])
+  userId String
+  action UserAction
+  entityType EntityType
+  entityId String
+  details String?
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+}
+
+enum EntityType {
+  PRODUCT
+  ORDER
+}
+
+enum UserAction {
+  CREATE
+  UPDATE
+  DELETE
+}
+
+enum SalesOrderStatus {
+  PENDING
+  SHIPPED
+  COMPLETED
+}
+
+enum StockType {
+  IN
+  OUT
+}
+
+enum OrderStatus {
+  PENDING
+  COMPLETED
+}
+
+enum Role {
+  ADMIN
+  USER
+}

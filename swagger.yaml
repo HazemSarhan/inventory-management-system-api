@@ -1,0 +1,771 @@
+openapi: 3.0.0
+info:
+  title: Inventory Management System
+  version: 1.0.0
+servers:
+  - url: http://localhost:5000/api/v1
+tags:
+  - name: Authentication
+  - name: Users
+  - name: Categories
+  - name: Warehouses
+  - name: Products
+  - name: Suppliers
+  - name: Purchase Order
+  - name: Purchase Order Item
+  - name: Customers
+  - name: Stock Movement
+  - name: Sales Orders
+  - name: Sales Order Items
+paths:
+  /auth/register:
+    post:
+      tags:
+        - Authentication
+      summary: Register User
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: user2
+                email:
+                  type: string
+                  example: hazem@admin.com
+                password:
+                  type: string
+                  example: secret
+                bio:
+                  type: string
+                  example: this is bio
+                profile_picture:
+                  type: string
+                  format: binary
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /auth/login:
+    post:
+      tags:
+        - Authentication
+      summary: Login User
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                email: hazem@admin.com
+                password: secret
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /auth/logout:
+    get:
+      tags:
+        - Authentication
+      summary: Logout User
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /users:
+    get:
+      tags:
+        - Users
+      summary: Get All Users
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /users/{id}:
+    parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+        description: userId
+    get:
+      tags:
+        - Users
+      summary: Get Single User By Id
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    patch:
+      tags:
+        - Users
+      summary: Update User Data
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: user3
+                email:
+                  type: string
+                  example: hazem@admin.com
+                password:
+                  type: string
+                  example: secret
+                bio:
+                  type: string
+                  example: this is updated bio
+                role:
+                  type: string
+                  example: ADMIN
+                profile_picture:
+                  type: string
+                  format: binary
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /users/{id}/updatePassword:
+    parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+        description: userId
+    patch:
+      tags:
+        - Users
+      summary: Update User Password
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                oldPassword: newSecret
+                newPassword: secret
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /users/{id}/updateRole:
+    parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+        description: userId
+    patch:
+      tags:
+        - Users
+      summary: Update User Role
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                role: ADMIN
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /categories:
+    post:
+      tags:
+        - Categories
+      summary: Create Category
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                name: 'Category #2'
+                description: 'This is Category #2 description lorem'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    get:
+      tags:
+        - Categories
+      summary: Get All Categories
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /categories/1:
+    get:
+      tags:
+        - Categories
+      summary: Get Category By Id
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    patch:
+      tags:
+        - Categories
+      summary: Update Category
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                name: Category | Updated!
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /categories/2:
+    delete:
+      tags:
+        - Categories
+      summary: Delete Category
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /warehouses:
+    post:
+      tags:
+        - Warehouses
+      summary: Create Warehouse
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                name: warehouse no.2
+                location: Alaska
+                capacity: 20
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    get:
+      tags:
+        - Warehouses
+      summary: Get All Warehouses
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /warehouses/1:
+    get:
+      tags:
+        - Warehouses
+      summary: Get Warehouse By Id
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /warehouses/2:
+    patch:
+      tags:
+        - Warehouses
+      summary: Update Warehouse
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                name: warehouse no.2 updated
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /warehouses/3:
+    delete:
+      tags:
+        - Warehouses
+      summary: Delete Warehouse
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /products:
+    post:
+      tags:
+        - Products
+      summary: Create Product
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                name: 'Product #4'
+                description: lorem ipsum description from product number 3
+                price: 99.99
+                quantity: 20
+                categoryId: 1
+                warehouseId: 2
+                discount: 20
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    get:
+      tags:
+        - Products
+      summary: Get All Products
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /products/1:
+    get:
+      tags:
+        - Products
+      summary: Get Product By Id
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /products/4:
+    patch:
+      tags:
+        - Products
+      summary: Update Product
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                name: product3| UPDATED
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    delete:
+      tags:
+        - Products
+      summary: Delete Product
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /suppliers:
+    post:
+      tags:
+        - Suppliers
+      summary: Create Supplier
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                name: 'Supplier #3'
+                phoneNumber: +1 (916)-415-4121
+                address: 99 Alaska ST, Florida, 20192
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    get:
+      tags:
+        - Suppliers
+      summary: Get All Suppliers
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /suppliers/3:
+    get:
+      tags:
+        - Suppliers
+      summary: Get Supplier By Id
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    patch:
+      tags:
+        - Suppliers
+      summary: Update Supplier
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                name: Supplier name | Updated
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    delete:
+      tags:
+        - Suppliers
+      summary: Delete Supplier
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /orders:
+    post:
+      tags:
+        - Purchase Order
+      summary: Create Purchase Order
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                supplierId: 1
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    get:
+      tags:
+        - Purchase Order
+      summary: Get All Purchase Orders
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /orders/1:
+    get:
+      tags:
+        - Purchase Order
+      summary: Get Purchase Order By Id
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    patch:
+      tags:
+        - Purchase Order
+      summary: Update Purchase Order
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                status: COMPLETED
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /order-items/2/add:
+    post:
+      tags:
+        - Purchase Order Item
+      summary: Create Purchase Order Item
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                productId: 1
+                quantity: 10
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /order-items/2/receive:
+    post:
+      tags:
+        - Purchase Order Item
+      summary: Receive Purchase Order Items
+      requestBody:
+        content: {}
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /order-items/:
+    get:
+      tags:
+        - Purchase Order Item
+      summary: Get All Purchase Order Items
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /order-items/2:
+    get:
+      tags:
+        - Purchase Order Item
+      summary: Get Purchase Order Item By Id
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /customers:
+    post:
+      tags:
+        - Customers
+      summary: Create Customer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                name: Nusa Mata
+                phoneNumber: +1 (815)-321-8176
+                address: 80 Malaz, Trovil ST, 10314
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    get:
+      tags:
+        - Customers
+      summary: Get All Customers
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /customers/2:
+    get:
+      tags:
+        - Customers
+      summary: Get Customer By Id
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    patch:
+      tags:
+        - Customers
+      summary: Update Customer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                name: Updated
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    delete:
+      tags:
+        - Customers
+      summary: Delete Customer
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /stocks/:
+    post:
+      tags:
+        - Stock Movement
+      summary: IN / OUT Product Stock
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                productId: 1
+                warehouseId: 2
+                type: OUT
+                quantity: 20
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    get:
+      tags:
+        - Stock Movement
+      summary: All Stock Movement Reports
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /stocks/1:
+    get:
+      tags:
+        - Stock Movement
+      summary: Get Stock Movement By Id
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /sales:
+    post:
+      tags:
+        - Sales Orders
+      summary: Create Sales Order
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                customerId: 1
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    get:
+      tags:
+        - Sales Orders
+      summary: Get All Sales Order
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /sales/3:
+    get:
+      tags:
+        - Sales Orders
+      summary: Get Sales Order By Id
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    patch:
+      tags:
+        - Sales Orders
+      summary: Update Sales Order
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                status: SHIPPED
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    delete:
+      tags:
+        - Sales Orders
+      summary: Delete Sales Order
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /sales-items/1/add:
+    post:
+      tags:
+        - Sales Order Items
+      summary: Create Sales Order Item
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                productId: 1
+                quantity: 50
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /sales-items/1/receive:
+    post:
+      tags:
+        - Sales Order Items
+      summary: Ship Sales Order Item
+      requestBody:
+        content: {}
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /sales-items/:
+    get:
+      tags:
+        - Sales Order Items
+      summary: Get All Sales Order Items
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /sales-items/2:
+    get:
+      tags:
+        - Sales Order Items
+      summary: Get Sales Order Item By Id
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    delete:
+      tags:
+        - Sales Order Items
+      summary: Delete Sales Order Item
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
